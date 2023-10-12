@@ -8,9 +8,7 @@ import 'package:clockie/controller/stopwatch_controller.dart/stopwatch_controlle
 import 'package:clockie/view/stopwatch/bloc/stop_bloc.dart';
 
 import 'package:flutter/material.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class StopWatchScreen extends StatefulWidget {
   //for disposing it with parent => bottomviewer
