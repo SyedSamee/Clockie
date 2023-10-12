@@ -39,8 +39,7 @@ dependencies:
   flutter_bloc: ^8.1.3
   bloc: ^8.1.2
   intl: ^0.18.1
-  dotted_border: ^2.1.0
-  sleek_circular_slider : any
+
  
 
 dev_dependencies:
