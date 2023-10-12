@@ -17,13 +17,13 @@ class BottomViewer extends StatefulWidget {
 class _BottomViewerState extends State<BottomViewer> {
   HomeBloc homeBloc = HomeBloc();
   BottomViewerBloc bottomViewerBloc = BottomViewerBloc();
-  StopBloc stopBloc = StopBloc();
+  StopWatchBloc stopWatchBloc = StopWatchBloc();
   PageController pageController = PageController();
   @override
   void dispose() {
     homeBloc.close();
     bottomViewerBloc.close();
-    stopBloc.close();
+    stopWatchBloc.close();
     super.dispose();
   }
 
@@ -44,7 +44,7 @@ class _BottomViewerState extends State<BottomViewer> {
           children: [
             HomeScreen(homeBloc: homeBloc),
             StopWatchScreen(
-              stopBloc: stopBloc,
+              stopWatchBloc: stopWatchBloc,
             )
           ]),
     );
