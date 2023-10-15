@@ -16,3 +16,5 @@ final class ResumeWatchTimerState extends StopState {
   final List unFilteredTime;
   ResumeWatchTimerState({required this.time, required this.unFilteredTime});
 }
+
+final class ResetWatchTimerState extends StopState {}

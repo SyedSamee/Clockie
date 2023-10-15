@@ -34,7 +34,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
         child: BlocBuilder<StopWatchBloc, StopState>(
           bloc: widget.stopWatchBloc,
           buildWhen: (previous, current) =>
-              current is StopInitial ||
+              current is ResetWatchTimerState ||
               current is StopWatchTimerState ||
               current is ResumeWatchTimerState,
           builder: (context, state) {
@@ -43,20 +43,17 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                 SizedBox(
                   height: screenHeight * .1,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    timer?.cancel();
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      state is StopWatchTimerState
-                          ? "${state.time}"
-                          : state is ResumeWatchTimerState
-                              ? "${state.time}"
-                              : "00 : 00 : 00",
-                      style: TextStyle(fontSize: 55, color: appColorOne),
-                    ),
+                Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    state is StopWatchTimerState
+                        ? "${state.time}"
+                        : state is ResumeWatchTimerState
+                            ? "${state.time}"
+                            : state is ResetWatchTimerState
+                                ? "00 : 00 : 00"
+                                : "00 : 00 : 00",
+                    style: TextStyle(fontSize: 55, color: appColorOne),
                   ),
                 ),
                 SizedBox(
@@ -64,22 +61,12 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    state is StopWatchTimerState
-                        ? StopWatchController().stopWatchStartTime(
-                            widget.stopWatchBloc,
-                            true,
-                            state.time,
-                            state.unFilteredTime,
-                            false)
-                        : state is ResumeWatchTimerState
-                            ? StopWatchController().stopWatchStartTime(
-                                widget.stopWatchBloc,
-                                true,
-                                state.time,
-                                state.unFilteredTime,
-                                true)
-                            : StopWatchController().stopWatchStartTime(
-                                widget.stopWatchBloc, false, null, null, false);
+                    widget.stopWatchBloc.add(StopWatchStartPauseEvent(
+                        resumeWatchTimerState:
+                            state is ResumeWatchTimerState ? state : null,
+                        stopWatchBloc: widget.stopWatchBloc,
+                        stopWatchTimerState:
+                            state is StopWatchTimerState ? state : null));
                   },
                   child: Text(
                     state is StopWatchTimerState ? "Stop" : "Start",
@@ -90,9 +77,12 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                       backgroundColor: MaterialStateColor.resolveWith(
                           (states) => appColorOne)),
                 ),
-                state is! StopWatchTimerState
+                state is ResumeWatchTimerState
                     ? ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          widget.stopWatchBloc.add(ResetStopWatchEvent(
+                              stopWatchBloc: widget.stopWatchBloc));
+                        },
                         child: Text(
                           "Reset",
                           style: TextStyle(
